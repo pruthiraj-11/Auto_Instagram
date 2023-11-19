@@ -1,4 +1,4 @@
-package com.app.autoinstagram;
+package com.app.autoinstagram.Activities;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
