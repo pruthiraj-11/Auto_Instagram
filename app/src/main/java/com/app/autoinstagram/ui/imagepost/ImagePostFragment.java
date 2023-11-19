@@ -8,14 +8,14 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import com.app.autoinstagram.databinding.FragmentHomeBinding;
+import com.app.autoinstagram.databinding.FragmentImagepostBinding;
 
 public class ImagePostFragment extends Fragment {
 
-    private FragmentHomeBinding binding;
+    private FragmentImagepostBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        binding = FragmentHomeBinding.inflate(inflater, container, false);
+        binding = FragmentImagepostBinding.inflate(inflater, container, false);
 
         return binding.getRoot();
     }
