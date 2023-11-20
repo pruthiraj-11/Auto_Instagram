@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Toast;
 
 import com.app.autoinstagram.databinding.ActivityLoginBinding;
@@ -33,9 +34,8 @@ public class LoginActivity extends AppCompatActivity {
             PyObject pyObject=null;
             try {
                 pyObject=python.getModule("res");
-                login();
             } catch (PyException exception){
-                Toast.makeText(LoginActivity.this, exception.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, "err"+exception.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             }
         } else {
             Toast.makeText(LoginActivity.this, "Started earlier", Toast.LENGTH_SHORT).show();
@@ -43,9 +43,9 @@ public class LoginActivity extends AppCompatActivity {
             PyObject pyObject=null;
             try {
                 pyObject=python.getModule("res");
-                login();
+                Toast.makeText(LoginActivity.this, pyObject.toString(), Toast.LENGTH_SHORT).show();
             } catch (PyException exception){
-                Toast.makeText(LoginActivity.this, exception.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, "err"+exception.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             }
         }
 
@@ -55,15 +55,27 @@ public class LoginActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        binding.loginbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                login();
+            }
+        });
     }
 
     private void login(){
-        final PyObject object=pyObject.callAttr("accountLogin", Objects.requireNonNull(binding.usernameEditText.getText()).toString(), Objects.requireNonNull(binding.passwordEditText.getText()).toString());
-        if (object.toString().equals("Login successfully.")){
-            startActivity(new Intent(LoginActivity.this, MainActivity2.class));
-            finish();
+        if (!binding.usernameEditText.getText().toString().isEmpty() && !binding.passwordEditText.getText().toString().isEmpty()){
+            final PyObject object=pyObject.callAttr("accountLogin", Objects.requireNonNull(binding.usernameEditText.getText()).toString(), Objects.requireNonNull(binding.passwordEditText.getText()).toString());
+            if (object.toString().equals("Login successfully.")){
+                startActivity(new Intent(LoginActivity.this, MainActivity2.class));
+                finish();
+            } else {
+                Toast.makeText(this, "Login failed. Try again", Toast.LENGTH_SHORT).show();
+            }
         } else {
-            Toast.makeText(this, "Login failed. Try again", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Credentials can't be empty.", Toast.LENGTH_SHORT).show();
         }
+
     }
 }

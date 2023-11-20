@@ -1,6 +1,7 @@
 package com.app.autoinstagram.Activities;
 
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.Menu;
 import android.widget.Toast;
 
@@ -11,6 +12,8 @@ import com.chaquo.python.Python;
 import com.chaquo.python.android.AndroidPlatform;
 import com.google.android.material.navigation.NavigationView;
 
+import androidx.activity.OnBackPressedCallback;
+import androidx.core.view.GravityCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -24,7 +27,6 @@ public class MainActivity2 extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMain2Binding binding;
-    PyObject object;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,30 +47,16 @@ public class MainActivity2 extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
-        object=null;
-        if (! Python.isStarted()) {
-            Python.start(new AndroidPlatform(MainActivity2.this));
-            Toast.makeText(MainActivity2.this, "Started", Toast.LENGTH_SHORT).show();
-            Python python=Python.getInstance();
-            PyObject pyObject=null;
-            try {
-                pyObject=python.getModule("res");
-//                Toast.makeText(MainActivity2.this, pyObject.toString(), Toast.LENGTH_SHORT).show();
-            } catch (PyException exception){
-                Toast.makeText(MainActivity2.this, exception.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                    binding.drawerLayout.closeDrawer(GravityCompat.START);
+                } else {
+                    finish();
+                }
             }
-        } else {
-            Toast.makeText(MainActivity2.this, "Started earlier", Toast.LENGTH_SHORT).show();
-            Python python=Python.getInstance();
-            PyObject pyObject=null;
-            try {
-                pyObject=python.getModule("res");
-//                Toast.makeText(MainActivity2.this, pyObject.toString(), Toast.LENGTH_SHORT).show();
-
-            } catch (PyException exception){
-                Toast.makeText(MainActivity2.this, exception.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-            }
-        }
+        });
     }
 
     @Override
