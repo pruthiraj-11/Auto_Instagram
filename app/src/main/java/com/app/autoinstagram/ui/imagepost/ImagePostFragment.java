@@ -31,7 +31,7 @@ public class ImagePostFragment extends Fragment {
             Python python=Python.getInstance();
             PyObject pyObject=null;
             try {
-                pyObject=python.getModule("res");
+                pyObject=python.getModule("instaprogram");
 //                Toast.makeText(MainActivity2.this, pyObject.toString(), Toast.LENGTH_SHORT).show();
             } catch (PyException exception){
                 Toast.makeText(requireContext(), exception.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
@@ -41,7 +41,7 @@ public class ImagePostFragment extends Fragment {
             Python python=Python.getInstance();
             PyObject pyObject=null;
             try {
-                pyObject=python.getModule("res");
+                pyObject=python.getModule("instaprogram");
 //                Toast.makeText(MainActivity2.this, pyObject.toString(), Toast.LENGTH_SHORT).show();
 
             } catch (PyException exception){

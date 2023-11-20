@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -26,25 +27,26 @@ public class LoginActivity extends AppCompatActivity {
         binding=ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        pyObject=null;
         if (! Python.isStarted()) {
             Python.start(new AndroidPlatform(LoginActivity.this));
             Toast.makeText(LoginActivity.this, "Started", Toast.LENGTH_SHORT).show();
             Python python=Python.getInstance();
-            PyObject pyObject=null;
+            pyObject=null;
             try {
-                pyObject=python.getModule("res");
+                pyObject=python.getModule("instaprogram");
+                Toast.makeText(LoginActivity.this, pyObject.toString(), Toast.LENGTH_SHORT).show();
             } catch (PyException exception){
                 Toast.makeText(LoginActivity.this, "err"+exception.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             }
         } else {
             Toast.makeText(LoginActivity.this, "Started earlier", Toast.LENGTH_SHORT).show();
             Python python=Python.getInstance();
-            PyObject pyObject=null;
+            pyObject=null;
             try {
-                pyObject=python.getModule("res");
+                pyObject=python.getModule("instaprogram");
                 Toast.makeText(LoginActivity.this, pyObject.toString(), Toast.LENGTH_SHORT).show();
             } catch (PyException exception){
+                Log.d("sd", Objects.requireNonNull(exception.getLocalizedMessage()));
                 Toast.makeText(LoginActivity.this, "err"+exception.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             }
         }
@@ -76,6 +78,5 @@ public class LoginActivity extends AppCompatActivity {
         } else {
             Toast.makeText(this, "Credentials can't be empty.", Toast.LENGTH_SHORT).show();
         }
-
     }
 }
